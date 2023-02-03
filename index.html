@@ -28,10 +28,9 @@
         <div class="text-center">
             (This tool is not guaranteed to be accruate. Make sure to verify with project documents and on chain
             data.)
-
         </div>
         <br>
-        
+
         <div> Enter SAN Origin # : &nbsp;
             <input id="myInput" type="number" placeholder="1-10000">
             <button type="button" onclick="getSanSoundOriginData();">Load Data</button>
@@ -39,55 +38,53 @@
         <br>
         <div class="row justify-content-md-center">
             <div class="col-sm-6">
-                <h2>Image</h2>
                 <br>
+                <h2>Image</h2>
+            
                 <div id="nftimage">
-
                 </div>
             </div>
 
             <div class="col-sm-6">
-                <h2>SAN Origin Traits</h2>
                 <br>
+                <h2>SAN Origin Traits</h2>
+                
                 <table class="table table-bordered table-hover" id="mytable">
                     <thead>
                         <th scope="col">Trait Type</th>
                         <th scope="col">Trait Value</th>
-
                     </thead>
                     <tbody id="tablebody">
                     </tbody>
                 </table>
             </div>
         </div>
-
-        <br><br><br>
-
-
         <div>
+            <br>
             <h2>Static Brilliance Traits</h2>
             <ul class="list-group" id="brillianceTraits">
 
             </ul>
         </div>
 
+        <p>*Token airdrop multipliers only apply if the NFT with the corresponding trait is souldbound to Level 2
+            (Defiant) or greater.</p>
 
-
-        <p>*Token airdrop multipliers only apply if the NFT with the corresponding trait is souldbound to Level 2 (Defiant) or greater.</p>
-        <br>
+        <div>
+            <br>
+            <h2>Dynamic Brilliance Traits</h2>
+            <p>No information released yet...</p>
+        </div>
         <br>
         <br>
         <div>
-            <p> 
-                <br> 
+            <p>
+                <br>
                 <br>This App uses Opensea API
                 <br>
             </p>
         </div>
     </div>
-
-
-
 
     <script>
         //Get traits from Opensea API
@@ -153,7 +150,7 @@
                             brillianceTraits.innerHTML += `<li class="generatedContent list-group-item bg-transparent">Mecha — Animated NFT, at no cost.</li>`;
                             break;
                         case "Faction Sora":
-                            brillianceTraits.innerHTML += `<li class="generatedContent list-group-item bg-transparent">Sora — 2x multiplier on governance token airdrop per soulbound Sora (limited to 2)"</li>`;
+                            brillianceTraits.innerHTML += `<li class="generatedContent list-group-item bg-transparent">Sora — 2x multiplier on governance token airdrop per soulbound Sora (limited to 2)</li>`;
                             break;
                         case "Faction Umi":
                             brillianceTraits.innerHTML += `<li class="generatedContent list-group-item bg-transparent">Umi — Add platform music as background vibes to your Companion, at no cost.</li>`;
