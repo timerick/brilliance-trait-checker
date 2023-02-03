@@ -25,13 +25,13 @@
     <div class="container" style="background-color: rgba(211, 211, 211, 0.9);">
         <br>
         <h1 class="text-center">Brilliance Trait Checker</h1>
-        <br>
-        <div>
-            Note: This tool is not guaranteed to be accruate. Make sure to verify with project documents and on chain
-            data.
+        <div class="text-center">
+            (This tool is not guaranteed to be accruate. Make sure to verify with project documents and on chain
+            data.)
 
         </div>
         <br>
+        
         <div> Enter SAN Origin # : &nbsp;
             <input id="myInput" type="number" placeholder="1-10000">
             <button type="button" onclick="getSanSoundOriginData();">Load Data</button>
@@ -42,10 +42,10 @@
                 <h2>Image</h2>
                 <br>
                 <div id="nftimage">
-        
+
                 </div>
             </div>
-        
+
             <div class="col-sm-6">
                 <h2>SAN Origin Traits</h2>
                 <br>
@@ -53,7 +53,7 @@
                     <thead>
                         <th scope="col">Trait Type</th>
                         <th scope="col">Trait Value</th>
-        
+
                     </thead>
                     <tbody id="tablebody">
                     </tbody>
@@ -73,14 +73,15 @@
 
 
 
-        <p>*Token airdrop multipliers only apply if the NFT with the corresponding trait is souldbound to Level 2
-            (Defiant)
-            or greater.</p>
-        <br><br><br>
+        <p>*Token airdrop multipliers only apply if the NFT with the corresponding trait is souldbound to Level 2 (Defiant) or greater.</p>
+        <br>
+        <br>
+        <br>
         <div>
-            <p> Note: A utility of being a SAN Origin NFT holder now includes weekly art airdrops from Cromagnus. Some
-                traits, when soulbound, enhance this experience.
-                <br> This App uses Opensea API
+            <p> 
+                <br> 
+                <br>This App uses Opensea API
+                <br>
             </p>
         </div>
     </div>
@@ -120,7 +121,7 @@
                 var noEdgeCount = 0;
                 nftimage.innerHTML = `<img class="img-fluid" src=` + data.image_thumbnail_url + `>`;
 
-                console.log(data)
+
 
                 data.traits.forEach(val => {
                     tablebody.innerHTML += `<tr><td>${val.trait_type}</td> <td>${val.value}</td></tr>`;
@@ -128,7 +129,6 @@
 
                     // deals with gold traits
                     if (val.trait_type === "Character Color" && val.value === "Gold") {
-                        console.log("gold")
                         brillianceTraits.innerHTML += `<li class="generatedContent list-group-item  bg-transparent">Gold Companion — Free Mint for Character PFP, Gold Versions of weekly art drops (for every Gold held). NO SOULBIND REQUIRED.</li>`;
                     }
 
@@ -140,13 +140,9 @@
                     if (val.trait_type === "Edge 1" && val.value === "None" || val.trait_type === "Edge 2" && val.value === "None" || val.trait_type === "Edge 3" && val.value === "None") {
                         noEdgeCount = noEdgeCount + 1;
                         if (noEdgeCount === 3) {
-                            console.log("No Edges")
                             brillianceTraits.innerHTML += `<li class="generatedContent list-group-item bg-transparent">0 Edge Traits (The Edgeless) — Minimalist Discord Role.</li>`;
                         } else if (noEdgeCount === 0) {
-                            console.log("Has 3 Edges")
                             brillianceTraits.innerHTML += `<li class="generatedContent list-group-item bg-transparent">3 Edge Traits — Private AMA with Founders.</li>`;
-                        } else {
-                            console.log(noEdgeCount)
                         }
                     }
 
