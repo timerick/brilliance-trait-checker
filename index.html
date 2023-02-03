@@ -1,0 +1,273 @@
+<!DOCTYPE html>
+<html lang="en" dir="ltr">
+
+<head>
+    <meta charset="utf-8">
+    <meta http-equiv="X-UA-Compatible" content="IE=edge">
+    <meta name="viewport" content="width=device-width, initial-scale=1">
+
+    <title>Brilliance Trait Checker</title>
+
+    <link href="https://cdn.jsdelivr.net/npm/bootstrap@5.0.2/dist/css/bootstrap.min.css" rel="stylesheet"
+        integrity="sha384-EVSTQN3/azprG1Anm3QDgpJLIm9Nao0Yz1ztcQTwFspd3yD65VohhpuuCOmLASjC" crossorigin="anonymous">
+    <link href="css/style.css" rel="stylesheet">
+
+</head>
+
+<body class="bg-image" style="
+        background-image: url('images/BassDrop9990.avif');
+        background-repeat: no-repeat;
+        background-size: cover;
+        background-attachment: fixed;
+        background-position: center top;
+        height:100vh;
+        ">
+
+    <div class="container" style="background-color: rgba(211, 211, 211, 0.9);">
+        <br>
+        <h1 class="text-center">Brilliance Trait Checker</h1>
+        <br>
+        <div>
+            Note: This tool is not guaranteed to be accruate. Make sure to verify with project documents and on chain
+            data.
+
+        </div>
+        <br>
+        <div> Enter SAN Origin # : &nbsp;
+            <input id="myInput" type="number" placeholder="1-10000">
+            <button type="button" onclick="getSanSoundOriginData();">Load Data</button>
+        </div>
+        <br>
+        <div class="row justify-content-md-center">
+            <div class="col-sm-6">
+                <h2>Image</h2>
+                <br>
+                <div id="nftimage">
+        
+                </div>
+            </div>
+        
+            <div class="col-sm-6">
+                <h2>SAN Origin Traits</h2>
+                <br>
+                <table class="table table-bordered table-hover" id="mytable">
+                    <thead>
+                        <th scope="col">Trait Type</th>
+                        <th scope="col">Trait Value</th>
+        
+                    </thead>
+                    <tbody id="tablebody">
+                    </tbody>
+                </table>
+            </div>
+        </div>
+
+        <br><br><br>
+
+
+        <div>
+            <h2>Static Brilliance Traits</h2>
+            <ul class="list-group" id="brillianceTraits">
+
+            </ul>
+        </div>
+
+
+
+        <p>*Token airdrop multipliers only apply if the NFT with the corresponding trait is souldbound to Level 2
+            (Defiant)
+            or greater.</p>
+        <br><br><br>
+        <div>
+            <p> Note: A utility of being a SAN Origin NFT holder now includes weekly art airdrops from Cromagnus. Some
+                traits, when soulbound, enhance this experience.
+                <br> This App uses Opensea API
+            </p>
+        </div>
+    </div>
+
+
+
+
+    <script>
+        //Get traits from Opensea API
+        const options = { method: 'GET' };
+        const url = 'https://api.opensea.io/api/v1/asset/0x33333333333371718A3C2bB63E5F3b94C9bC13bE/'
+
+        const tablebody = document.getElementById("tablebody");
+        const generatedContent = document.getElementsByClassName("generatedContent");
+        const nftimage = document.getElementById("nftimage");
+        const brillianceTraits = document.getElementById("brillianceTraits");
+
+
+        //get input information
+        function getSanSoundOriginData() {
+            var inputVal = document.getElementById("myInput").value;
+
+            //clears previous data
+            while (generatedContent.length > 0) {
+                generatedContent[0].parentNode.removeChild(generatedContent[0]);
+            }
+
+            document.getElementById("tablebody").innerHTML = '';
+
+            //uses input from user to change url and pull nft metadata
+            fetch(url + inputVal + "/?include_orders=false", options)
+                .then(response => response.json())
+                .then(data => checkForBrillianceTraits(data));
+
+            //Queries data for brilliance traits and values outputs it into a list
+            function checkForBrillianceTraits(data) {
+                var noEdgeCount = 0;
+                nftimage.innerHTML = `<img class="img-fluid" src=` + data.image_thumbnail_url + `>`;
+
+                console.log(data)
+
+                data.traits.forEach(val => {
+                    tablebody.innerHTML += `<tr><td>${val.trait_type}</td> <td>${val.value}</td></tr>`;
+
+
+                    // deals with gold traits
+                    if (val.trait_type === "Character Color" && val.value === "Gold") {
+                        console.log("gold")
+                        brillianceTraits.innerHTML += `<li class="generatedContent list-group-item  bg-transparent">Gold Companion — Free Mint for Character PFP, Gold Versions of weekly art drops (for every Gold held). NO SOULBIND REQUIRED.</li>`;
+                    }
+
+                    if (val.trait_type === "Background" && val.value === "Gold") {
+                        brillianceTraits.innerHTML += `<li class="generatedContent list-group-item  bg-transparent">Gold Background — Legendary (IMCMPLX) Genesis Hardware colorways</li>`;
+                    }
+
+                    //deals with 0 and 3 edge traits
+                    if (val.trait_type === "Edge 1" && val.value === "None" || val.trait_type === "Edge 2" && val.value === "None" || val.trait_type === "Edge 3" && val.value === "None") {
+                        noEdgeCount = noEdgeCount + 1;
+                        if (noEdgeCount === 3) {
+                            console.log("No Edges")
+                            brillianceTraits.innerHTML += `<li class="generatedContent list-group-item bg-transparent">0 Edge Traits (The Edgeless) — Minimalist Discord Role.</li>`;
+                        } else if (noEdgeCount === 0) {
+                            console.log("Has 3 Edges")
+                            brillianceTraits.innerHTML += `<li class="generatedContent list-group-item bg-transparent">3 Edge Traits — Private AMA with Founders.</li>`;
+                        } else {
+                            console.log(noEdgeCount)
+                        }
+                    }
+
+
+                    switch (val.trait_type) {
+                        //Factions
+                        case "Faction Mecha":
+                            brillianceTraits.innerHTML += `<li class="generatedContent list-group-item bg-transparent">Mecha — Animated NFT, at no cost.</li>`;
+                            break;
+                        case "Faction Sora":
+                            brillianceTraits.innerHTML += `<li class="generatedContent list-group-item bg-transparent">Sora — 2x multiplier on governance token airdrop per soulbound Sora (limited to 2)"</li>`;
+                            break;
+                        case "Faction Umi":
+                            brillianceTraits.innerHTML += `<li class="generatedContent list-group-item bg-transparent">Umi — Add platform music as background vibes to your Companion, at no cost.</li>`;
+                            break;
+                        case "Faction Chi":
+                            brillianceTraits.innerHTML += `<li class="generatedContent list-group-item  bg-transparent">Chi — Earn a multiplier on weekly art and comic deliveries by owning Any unbound Chi Faction Companions. For every additional unbound Chi Faction Companion you own (Chi Faction companion does not need to be soulbound), you increase the number of weekly art deliveries you receive. You must have a Soulbound Chi Companion to be included in this bonus."</li>`;
+
+                            break;
+                        case "No Faction":
+                            brillianceTraits.innerHTML += `<li class="generatedContent list-group-item  bg-transparent">No Faction  — Two Pairs of our Genesis Hardware (SAN IEMs)</li>`;
+                            break;
+                    }
+
+                    switch (val.value) {
+                        //Backgrounds
+                        case "Camo Fire":
+                        case "Camo Water":
+                        case "Camo Jungle":
+                        case "Camo Cold Fire":
+                            brillianceTraits.innerHTML += `<li class="generatedContent list-group-item  bg-transparent">Any Camo — Rare Genesis Hardware colorways</li>`;
+                            break;
+
+                        case "Black Hole":
+                            brillianceTraits.innerHTML += `<li class="generatedContent list-group-item  bg-transparent">Black Hole — Legendary (IMCMPLX) Genesis Hardware colorways</li>`;
+                            break;
+
+                        //Companions (NEED TO ADD GOLD)
+                        case "Light Cro":
+                        case "Dark Cro":
+                            brillianceTraits.innerHTML += `<li class="generatedContent list-group-item  bg-transparent">Light or Dark Cro — Access to exclusive physical SAN art from Cromagnus.</li>`;
+                            break;
+
+                        //The 88
+                        case "Tiger":
+                            brillianceTraits.innerHTML += `<li class="generatedContent list-group-item  bg-transparent">1/88 — “The 88” — You won’t be disappointed.</li>`;
+                            break;
+
+                        // 1/80
+                        case "Octo":
+                        case "Octobot":
+                        case "Octophono":
+                        case "Octoteeth":
+                            brillianceTraits.innerHTML += `<li class="generatedContent list-group-item  bg-transparent">1/80 — Merch store discounts (You can hold a lot of merch with 8 arms).</li>`;
+                            break;
+
+                        // 1/30
+                        case "Bull":
+                        case "Dragon":
+                        case "HODL King":
+                        case "Runaway Xin":
+                        case "Xin Delivery":
+                            brillianceTraits.innerHTML += `<li class="generatedContent list-group-item  bg-transparent">1/30 — Guaranteed one Free Character PFP on the next collection mint (which will not be a free mint).</li>`;
+                            break;
+
+                        // 1/13
+                        case "Backup Band":
+                        case "Bobby":
+                        case "Caterpillar":
+                        case "Crispr":
+                        case "HenXin Crab":
+                        case "HenXin Dragon":
+                        case "HenXin Whale":
+                        case "Hero Space":
+                        case "Junior":
+                        case "SAN":
+                            brillianceTraits.innerHTML += `<li class="generatedContent list-group-item  bg-transparent">1/13 — You’re on a higher dimension. Unlock the secrets to a second soulbound level 1 at no cost.</li>`;
+                            break;
+
+                        // 1/3
+                        case "Gold Bars":
+                            brillianceTraits.innerHTML += `<li class="generatedContent list-group-item  bg-transparent">1/3 — Receive 1/1 SAN Headphones + 3x governance token multiplier.*</li>`;
+                            break;
+
+                        //Edge and Inner Traits 
+                        case "Private Key":
+                            brillianceTraits.innerHTML += `<li class="generatedContent list-group-item  bg-transparent">Private Key — Backstage Access at every SAN event (Meet the team and artists if/when available)… But, perhaps there is more to unlock.</li>`;
+                            break;
+                        case "Touching Grass":
+                            brillianceTraits.innerHTML += `<li class="generatedContent list-group-item  bg-transparent">Touching Grass — No Fomo, Auto-whitelisting. No stress, bro.</li>`;
+                            break;
+                        case "Tokens Gold":
+                            tokenMultiplier.innerHTML += `<li class="generatedContent list-group-item  bg-transparent">Gold Tokens — 1.3x Governance Multiplier (Limited to 3).*</li>`;
+                            break;
+                        case "Tokens Silver":
+                            brillianceTraits.innerHTML += `<li class="generatedContent list-group-item  bg-transparent">Silver Tokens — 1.1x Governance Multiplier (Limited to 3).*</li>`;
+                            break;
+                        case "Breakout ":
+                            brillianceTraits.innerHTML += `<li class="generatedContent list-group-item  bg-transparent">Breakout — 3x multiplier of platform invites (must be Soulbound 2, 3, or 4).</li>`;
+                            break;
+                        case "Insert Coin":
+                            brillianceTraits.innerHTML += `<li class="generatedContent list-group-item  bg-transparent">Insert Coin — Token Bonuses with Gaming Partners (Limited to 3).</li>`;
+                            break;
+                        case "Arthur":
+                            brillianceTraits.innerHTML += `<li class="generatedContent list-group-item  bg-transparent">Arthur — Hidden treasures await.</li>`;
+                            break;
+
+                        //NEED TO ADD: 0 Edge Traits and 3 Edge Traits
+
+                    }
+
+                })
+
+            }
+        } 
+    </script>
+    <script src="https://cdn.jsdelivr.net/npm/bootstrap@5.0.2/dist/js/bootstrap.bundle.min.js"
+        integrity="sha384-MrcW6ZMFYlzcLA8Nl+NtUVF0sA7MsXsP1UyJoMp4YLEuNSfAP+JcXn/tWtIaxVXM" crossorigin="anonymous">
+        </script>
+</body>
+
+
+</html>
