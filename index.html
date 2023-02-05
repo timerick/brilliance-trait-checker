@@ -31,16 +31,37 @@
         </div>
         <br>
 
-        <div> Enter SAN Origin # : &nbsp;
-            <input id="myInput" type="number" placeholder="1-10000">
-            <button type="button" onclick="getSanSoundOriginData();">Load Data</button>
+        <form>
+            <div>
+                <label for="sanOriginNumber">Enter SAN Origin # : &nbsp;</label>
+                <input id="sanOriginNumber" type="number" placeholder="1-10000">
+            </div>
+            <br>
+            <div>
+                <label for="soulBoundLevel">Soulbound Level: &nbsp;</label>
+                <select id="soulBoundLevel">
+                    <option value="unbound">0三Unbound</option>
+                    <option value="levelOne">1三Citizen</option>
+                    <option value="levelTwo">2三Defiant</option>
+                    <option value="levelThree">3三Hanzoku</option>
+                    <option value="levelFour">4三TheThirtyThree</option>
+                </select>
+                <br>
+                <br>
+                <button type="button" onclick="getSanSoundOriginData(); soulBoundRewards();">Load Data</button>
+            </div>
+        </form>
+
+        <div>
+
         </div>
+
         <br>
         <div class="row justify-content-md-center">
             <div class="col-sm-6">
                 <br>
-                <h2>Image</h2>
-            
+                <h2>Companion</h2>
+
                 <div id="nftimage">
                 </div>
             </div>
@@ -48,21 +69,24 @@
             <div class="col-sm-6">
                 <br>
                 <h2>SAN Origin Traits</h2>
-                
+
                 <table class="table table-bordered table-hover" id="mytable">
                     <thead>
                         <th scope="col">Trait Type</th>
                         <th scope="col">Trait Value</th>
                     </thead>
-                    <tbody id="tablebody">
+                    <tbody id="traitAndValueTablebody">
                     </tbody>
                 </table>
             </div>
         </div>
+        
+        
+        
         <div>
             <br>
             <h2>Static Brilliance Traits</h2>
-            <ul class="list-group" id="brillianceTraits">
+            <ul class="list-group" id="brillianceTraitsList">
 
             </ul>
         </div>
@@ -75,13 +99,24 @@
             <h2>Dynamic Brilliance Traits</h2>
             <p>No information released yet...</p>
         </div>
+
+        <div>
+            <br>
+            <h2 id="soulBoundRewardsTitle">Soul Bound Rewards</h2>
+            <ul class="list-group" id="soulBoundRewardsList">
+
+            </ul>
+        </div>
+
+
         <div>
             <p>
                 <br>
                 Tips for my Toaster Fund: 0x84FdD7872010130ff5337a224771D503b289CBe2
                 <br>
                 <br>
-                This App uses Opensea's Public API <a href="https://opensea.io/collection/san-origin">SAN Origin Collection on Opensea</a>
+                This App uses Opensea's Public API <a href="https://opensea.io/collection/san-origin">SAN Origin
+                    Collection on Opensea</a>
                 <br>
                 <br>
             </p>
@@ -93,60 +128,68 @@
         const options = { method: 'GET' };
         const url = 'https://api.opensea.io/api/v1/asset/0x33333333333371718A3C2bB63E5F3b94C9bC13bE/'
 
-        const tablebody = document.getElementById("tablebody");
+        const tablebody = document.getElementById("traitAndValueTablebody");
         const generatedContent = document.getElementsByClassName("generatedContent");
         const nftimage = document.getElementById("nftimage");
-        const brillianceTraits = document.getElementById("brillianceTraits");
+        const brillianceTraits = document.getElementById("brillianceTraitsList");
 
 
         //get input information
         function getSanSoundOriginData() {
-            var inputVal = document.getElementById("myInput").value;
-
-            //clears previous data
+            tablebody.innerHTML = '';
             while (generatedContent.length > 0) {
                 generatedContent[0].parentNode.removeChild(generatedContent[0]);
             }
 
-            document.getElementById("tablebody").innerHTML = '';
-
             //uses input from user to change url and pull nft metadata
-            fetch(url + inputVal + "/?include_orders=false", options)
-                .then(response => response.json())
-                .then(data => checkForBrillianceTraits(data));
+            var inputVal = document.getElementById("sanOriginNumber").value;
+
+            inputVal >= 1 && inputVal <= 10000
+                ? fetch(url + inputVal + "/?include_orders=false", options)
+                    .then(response => response.json())
+                    .then(data => checkForBrillianceTraits(data))
+                : console.log("Invalid Input");
+
 
             //Queries data for brilliance traits and values outputs it into a list
             function checkForBrillianceTraits(data) {
-                var noEdgeCount = 0;
+                let noEdgeCount = 0;
+
                 nftimage.innerHTML = `<img class="img-fluid" src=` + data.image_thumbnail_url + `>`;
-
-
 
                 data.traits.forEach(val => {
                     tablebody.innerHTML += `<tr><td>${val.trait_type}</td> <td>${val.value}</td></tr>`;
 
-
-                    // deals with gold traits
-                    if (val.trait_type === "Character Color" && val.value === "Gold") {
-                        brillianceTraits.innerHTML += `<li class="generatedContent list-group-item  bg-transparent">Gold Companion — Free Mint for Character PFP, Gold Versions of weekly art drops (for every Gold held). NO SOULBIND REQUIRED.</li>`;
-                    }
-
-                    if (val.trait_type === "Background" && val.value === "Gold") {
-                        brillianceTraits.innerHTML += `<li class="generatedContent list-group-item  bg-transparent">Gold Background — Legendary (IMCMPLX) Genesis Hardware colorways</li>`;
-                    }
-
-                    //deals with 0 and 3 edge traits
-                    if (val.trait_type === "Edge 1" && val.value === "None" || val.trait_type === "Edge 2" && val.value === "None" || val.trait_type === "Edge 3" && val.value === "None") {
-                        noEdgeCount = noEdgeCount + 1;
-                        if (noEdgeCount === 3) {
-                            brillianceTraits.innerHTML += `<li class="generatedContent list-group-item bg-transparent">0 Edge Traits (The Edgeless) — Minimalist Discord Role.</li>`;
-                        } else if (noEdgeCount === 0) {
-                            brillianceTraits.innerHTML += `<li class="generatedContent list-group-item bg-transparent">3 Edge Traits — Private AMA with Founders.</li>`;
-                        }
-                    }
-
-
                     switch (val.trait_type) {
+                        case "Character Color":
+                            if (val.value === "Gold") {
+                                brillianceTraits.innerHTML += `<li class="generatedContent list-group-item  bg-transparent">Gold Companion — Free Mint for Character PFP, Gold Versions of weekly art drops (for every Gold held). NO SOULBIND REQUIRED.</li>`;
+                            }
+                            break;
+
+                        case "Background":
+                            if (val.value === "Gold") {
+                                brillianceTraits.innerHTML += `<li class="generatedContent list-group-item bg-transparent">Gold Background — Legendary (IMCMPLX) Genesis Hardware colorways</li>`;
+                            } else if (val.value.includes("Camo")) {
+                                brillianceTraits.innerHTML += `<li class="generatedContent list-group-item bg-transparent">Any Camo — Rare Genesis Hardware colorways</li>`;
+                            } else if (val.value === "Black Hole") {
+                                brillianceTraits.innerHTML += `<li class="generatedContent list-group-item bg-transparent">Black Hole — Legendary (IMCMPLX) Genesis Hardware colorways</li>`;
+                            }
+                            break;
+
+                        case "Edge 1":
+                        case "Edge 2":
+                        case "Edge 3":
+                            if (val.value === "None") {
+                                noEdgeCount += 1;
+                                if (noEdgeCount === 3) {
+                                    brillianceTraits.innerHTML += `<li class="generatedContent list-group-item bg-transparent">0 Edge Traits (The Edgeless) — Minimalist Discord Role.</li>`;
+                                } else if (noEdgeCount === 0) {
+                                    brillianceTraits.innerHTML += `<li class="generatedContent list-group-item bg-transparent">3 Edge Traits — Private AMA with Founders.</li>`;
+                                }
+                            }
+                            break;
+
                         //Factions
                         case "Faction Mecha":
                             brillianceTraits.innerHTML += `<li class="generatedContent list-group-item bg-transparent">Mecha — Animated NFT, at no cost.</li>`;
@@ -167,19 +210,8 @@
                     }
 
                     switch (val.value) {
-                        //Backgrounds
-                        case "Camo Fire":
-                        case "Camo Water":
-                        case "Camo Jungle":
-                        case "Camo Cold Fire":
-                            brillianceTraits.innerHTML += `<li class="generatedContent list-group-item  bg-transparent">Any Camo — Rare Genesis Hardware colorways</li>`;
-                            break;
 
-                        case "Black Hole":
-                            brillianceTraits.innerHTML += `<li class="generatedContent list-group-item  bg-transparent">Black Hole — Legendary (IMCMPLX) Genesis Hardware colorways</li>`;
-                            break;
-
-                        //Companions (NEED TO ADD GOLD)
+                        //Companions
                         case "Light Cro":
                         case "Dark Cro":
                             brillianceTraits.innerHTML += `<li class="generatedContent list-group-item  bg-transparent">Light or Dark Cro — Access to exclusive physical SAN art from Cromagnus.</li>`;
@@ -239,7 +271,7 @@
                         case "Tokens Silver":
                             brillianceTraits.innerHTML += `<li class="generatedContent list-group-item  bg-transparent">Silver Tokens — 1.1x Governance Multiplier (Limited to 3).*</li>`;
                             break;
-                        case "Breakout ":
+                        case "Breakout":
                             brillianceTraits.innerHTML += `<li class="generatedContent list-group-item  bg-transparent">Breakout — 3x multiplier of platform invites (must be Soulbound 2, 3, or 4).</li>`;
                             break;
                         case "Insert Coin":
@@ -249,14 +281,140 @@
                             brillianceTraits.innerHTML += `<li class="generatedContent list-group-item  bg-transparent">Arthur — Hidden treasures await.</li>`;
                             break;
 
-                        //NEED TO ADD: 0 Edge Traits and 3 Edge Traits
-
                     }
 
                 })
 
             }
-        } 
+        }
+
+    const soulBoundRewardsList = document.getElementById("soulBoundRewardsList");
+    const soulBoundRewardsTitle = document.getElementById("soulBoundRewardsTitle");
+
+    function soulBoundRewards(){
+        var soulBoundLevel = document.getElementById("soulBoundLevel").value;
+        
+        if (soulBoundLevel === "levelOne"){
+            console.log("Level 1: Citizen")
+            soulBoundRewardsTitle.textContent = "Soul Bound Rewards: 1三Citizen";
+            soulBoundRewardsList.innerHTML += 
+            `<li class="generatedContent list-group-item bg-transparent">SAN Sound Platform — One year of access.</li>
+            <li class="generatedContent list-group-item bg-transparent">Hardware — One SAN W三AR unit</li>   
+            <li class="generatedContent list-group-item bg-transparent">Event Access — Live Concerts/Festivals, Virtual Concerts, and “SAN-Con”. </li>
+            <li class="generatedContent list-group-item bg-transparent">Attendance Tokens — Attending SAN events may result in special soulbound NFTs appearing in the attendee’s wallet. These NFTs can unlock additional ecosystem perks.</li>
+            <li class="generatedContent list-group-item bg-transparent">SAN Tattoos — All major SAN events will have tattoo artists on site for great decisions and no regrets. All SAN-related tattoos will be free. Restrictions apply.</li>
+            <li class="generatedContent list-group-item bg-transparent">Allowlist — One allowlist spots for the next collection mint (which will not be a free mint).</li>
+            <li class="generatedContent list-group-item bg-transparent">Merchandise — Access to the SAN Merchandise Storefront. </li>
+            <li class="generatedContent list-group-item bg-transparent">Metadata Updates — Opt-in NFT Metadata Updates (Personalization/Animations).</li>
+            <li class="generatedContent list-group-item bg-transparent">Upgrades — SAN Sound In-App Upgrades.</li>
+            <li class="generatedContent list-group-item bg-transparent">Bonus — SAN Privacy Tools and Features.</li>
+            `;
+
+            
+
+        }else if (soulBoundLevel === "levelTwo"){
+            console.log("Level 2: Difiant")
+
+            soulBoundRewardsTitle.textContent = "Soul Bound Rewards: 2三Defiant";
+            soulBoundRewardsList.innerHTML += 
+            `<li class="generatedContent list-group-item bg-transparent">SAN Sound Platform — LIFETIME access.</li>
+            <li class="generatedContent list-group-item bg-transparent">Hardware — One SAN W三AR unit with 1-year warranty.</li>
+
+            <li class="generatedContent list-group-item bg-transparent">User Invites — 5 invites</li>
+
+            <li class="generatedContent list-group-item bg-transparent">Event Access — Live Concerts/Festivals, Virtual Concerts, and “SAN-Con”. </li>
+            <li class="generatedContent list-group-item bg-transparent">Attendance Tokens — Attending SAN events may result in special soulbound NFTs appearing in the attendee’s wallet. These NFTs can unlock additional ecosystem perks.</li>
+            <li class="generatedContent list-group-item bg-transparent">SAN Tattoos — All major SAN events will have tattoo artists on site for great decisions and no regrets. All SAN-related tattoos will be free. Restrictions apply.</li>
+            
+            <li class="generatedContent list-group-item bg-transparent">+1's for Events — Receive 1 additional entry to all SAN events per Level 2 soulbound NFT. RSVP will be required.</li>
+            <li class="generatedContent list-group-item bg-transparent">Governance Token — 1x multiplier on Airdrop.</li>
+
+
+            <li class="generatedContent list-group-item bg-transparent">Allowlist — One allowlist spots for the next collection mint (which will not be a free mint).</li>
+            
+            <li class="generatedContent list-group-item bg-transparent">Musician Invites — invite artists and receive chart reward share of any artist you invite.(More information to come...) </li>
+            <li class="generatedContent list-group-item bg-transparent">Merchandise — Access to the SAN Merchandise Storefront. </li>
+            <li class="generatedContent list-group-item bg-transparent">Metadata Updates — Opt-in NFT Metadata Updates (Personalization/Animations).</li>
+            <li class="generatedContent list-group-item bg-transparent">Upgrades — SAN Sound In-App Upgrades.</li>
+            <li class="generatedContent list-group-item bg-transparent">Bonus — SAN Privacy Tools and Features.</li>
+            `;
+
+
+
+        }else if (soulBoundLevel === "levelThree"){
+            console.log("Level 3: Hanzoku")
+
+            soulBoundRewardsTitle.textContent = "Soul Bound Rewards: 3三Hanzoku";
+            soulBoundRewardsList.innerHTML += 
+            `<li class="generatedContent list-group-item bg-transparent">SAN Sound Platform — LIFETIME access.</li>
+            <li class="generatedContent list-group-item bg-transparent">Hardware — One SAN W三AR unit with 1-year warranty.</li>
+
+            <li class="generatedContent list-group-item bg-transparent">User Invites — 10 invites</li>
+
+            <li class="generatedContent list-group-item bg-transparent">Event Access — Live Concerts/Festivals, Virtual Concerts, and “SAN-Con”. </li>
+            
+            <li class="generatedContent list-group-item bg-transparent">VIP Line — Get into events quickly and without the hassle.</li>
+            <li class="generatedContent list-group-item bg-transparent">VIP Areas — The “Faction Areas” are a way to connect with other faction members. Note: To enter a faction area the holder’s Soulbound Faction trait must correspond with the faction area.</li>
+
+
+            <li class="generatedContent list-group-item bg-transparent">Attendance Tokens — Attending SAN events may result in special soulbound NFTs appearing in the attendee’s wallet. These NFTs can unlock additional ecosystem perks.</li>
+            <li class="generatedContent list-group-item bg-transparent">SAN Tattoos — All major SAN events will have tattoo artists on site for great decisions and no regrets. All SAN-related tattoos will be free. Restrictions apply.</li>
+            
+            <li class="generatedContent list-group-item bg-transparent">+1's for Events — Receive 2 additional entries to all SAN events per Level 3 soulbound NFT. RSVP will be required.</li>
+            <li class="generatedContent list-group-item bg-transparent"> Governance Token — 2x multiplier on Airdrop</li>
+
+
+            <li class="generatedContent list-group-item bg-transparent">Allowlist — One allowlist spots for the next collection mint (which will not be a free mint).</li>
+            
+            <li class="generatedContent list-group-item bg-transparent">Musician Invites — invite artists and receive chart reward share of any artist you invite.(More information to come...) </li>
+            <li class="generatedContent list-group-item bg-transparent">Merchandise — Access to the SAN Merchandise Storefront. </li>
+            <li class="generatedContent list-group-item bg-transparent">Metadata Updates — Opt-in NFT Metadata Updates (Personalization/Animations).</li>
+            <li class="generatedContent list-group-item bg-transparent">Upgrades — SAN Sound In-App Upgrades.</li>
+            <li class="generatedContent list-group-item bg-transparent">Bonus — SAN Privacy Tools and Features.</li>
+            `;
+        }else if (soulBoundLevel === "levelFour"){
+            console.log("Level 4: The 33")
+            soulBoundRewardsTitle.textContent = "Soul Bound Rewards: 4三TheThirtyThree";
+            soulBoundRewardsList.innerHTML += 
+            `<li class="generatedContent list-group-item bg-transparent">SAN Sound Platform — LIFETIME access.</li>
+            <li class="generatedContent list-group-item bg-transparent">Hardware — One SAN W三AR unit with 1-year warranty.</li>
+
+            <li class="generatedContent list-group-item bg-transparent">User Invites — 100 invites</li>
+
+            <li class="generatedContent list-group-item bg-transparent">Event Access — Live Concerts/Festivals, Virtual Concerts, and “SAN-Con”. </li>
+            
+            <li class="generatedContent list-group-item bg-transparent">VIP Line — Get into events quickly and without the hassle.</li>
+            <li class="generatedContent list-group-item bg-transparent">VIP Areas — The “Faction Areas” are a way to connect with other faction members. Note: To enter a faction area the holder’s Soulbound Faction trait must correspond with the faction area.</li>
+
+
+            <li class="generatedContent list-group-item bg-transparent">Attendance Tokens — Attending SAN events may result in special soulbound NFTs appearing in the attendee’s wallet. These NFTs can unlock additional ecosystem perks.</li>
+            <li class="generatedContent list-group-item bg-transparent">SAN Tattoos — All major SAN events will have tattoo artists on site for great decisions and no regrets. All SAN-related tattoos will be free. Restrictions apply.</li>
+            
+            <li class="generatedContent list-group-item bg-transparent">+1's for Events —  Receive [?] additional entries to all SAN events per Level 4 soulbound NFT. A conversation with the SAN events team to define a customized package is required.</li>
+            <li class="generatedContent list-group-item bg-transparent"> Governance Token — 6x multiplier on Airdrop</li>
+
+
+            <li class="generatedContent list-group-item bg-transparent">Allowlist — One allowlist spots for the next collection mint (which will not be a free mint).</li>
+            
+            <li class="generatedContent list-group-item bg-transparent">Musician Invites — invite artists and receive chart reward share of any artist you invite.(More information to come...) </li>
+            <li class="generatedContent list-group-item bg-transparent">Merchandise — Access to the SAN Merchandise Storefront. </li>
+            <li class="generatedContent list-group-item bg-transparent">Metadata Updates — Opt-in NFT Metadata Updates (Personalization/Animations).</li>
+            <li class="generatedContent list-group-item bg-transparent">Upgrades — SAN Sound In-App Upgrades.</li>
+            <li class="generatedContent list-group-item bg-transparent">Bonus — SAN Privacy Tools and Features.</li>
+            `;
+
+
+        } else {
+            console.log("Not Soulbound")
+            soulBoundRewardsTitle.textContent = "Soul Bound Rewards: 0三Unbound";
+            soulBoundRewardsList.innerHTML += `
+            <li class="generatedContent list-group-item bg-transparent">Event Access — Unbound NFT holders (holders who are not soulbound) will receive ticket discounts to all events, provided they hold 3 or more NFTs.</li>
+            `;
+        }
+
+    }
+
+
     </script>
     <script src="https://cdn.jsdelivr.net/npm/bootstrap@5.0.2/dist/js/bootstrap.bundle.min.js"
         integrity="sha384-MrcW6ZMFYlzcLA8Nl+NtUVF0sA7MsXsP1UyJoMp4YLEuNSfAP+JcXn/tWtIaxVXM" crossorigin="anonymous">
