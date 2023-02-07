@@ -48,7 +48,7 @@
                 </select>
                 <br>
                 <br>
-                <button type="button" onclick="getSanSoundOriginData(); soulBoundRewards();">Load Data</button>
+                <button type="button" onclick="updateWithRequestedSanData();">Load Data</button>
             </div>
         </form>
 
@@ -97,6 +97,8 @@
         <div>
             <br>
             <h2>Dynamic Brilliance Traits</h2>
+            <p>Dynamic factors include scarcity, aesthetics, and narrative appearances; these factors will frequently
+                change.</p>
             <ul class="list-group" id="dynamicBrillianceTraitsList">
 
             </ul>
@@ -137,13 +139,21 @@
         const dynamicBrillianceTraitsList = document.getElementById("dynamicBrillianceTraitsList");
 
 
-        //get input information
-        function getSanSoundOriginData() {
+        function updateWithRequestedSanData() {
+            clearGeneratedContent();
+            getSanSoundMetaData();
+            getSoulBoundRewards();
+        }
+
+        function clearGeneratedContent() {
             tablebody.innerHTML = '';
             while (generatedContent.length > 0) {
                 generatedContent[0].parentNode.removeChild(generatedContent[0]);
             }
+        }
 
+        //get input information
+        function getSanSoundMetaData() {
             //uses input from user to change url and pull nft metadata
             var inputVal = document.getElementById("sanOriginNumber").value;
 
@@ -153,13 +163,11 @@
                     .then(data => checkForBrillianceTraits(data))
                 : console.log("Invalid Input");
 
-
             //Queries data for brilliance traits and values outputs it into a list
             function checkForBrillianceTraits(data) {
-                let noEdgeCount = 0;
-
                 nftimage.innerHTML = `<img class="img-fluid" src=` + data.image_thumbnail_url + `>`;
 
+                let noEdgeCount = 0;
                 data.traits.forEach(val => {
                     tablebody.innerHTML += `<tr><td>${val.trait_type}</td> <td>${val.value}</td></tr>`;
 
@@ -283,10 +291,10 @@
                         case "Arthur":
                             brillianceTraits.innerHTML += `<li class="generatedContent list-group-item  bg-transparent">Arthur — Hidden treasures await.</li>`;
                             break;
-                        
+
                         //dynamic brilliance traits
                         case "DJ":
-                        dynamicBrillianceTraitsList.innerHTML += `<li class="generatedContent list-group-item  bg-transparent">DJ - Let Kaku know if you hold this trait.</li>`;
+                            dynamicBrillianceTraitsList.innerHTML += `<li class="generatedContent list-group-item  bg-transparent">DJ - Let Kaku know if you hold this trait.</li>`;
                             break;
                     }
 
@@ -295,7 +303,7 @@
             }
         }
 
-        
+
         const soulBoundRewardsList = document.getElementById("soulBoundRewardsList");
         const soulBoundRewardsTitle = document.getElementById("soulBoundRewardsTitle");
         const notSoulBound = `
@@ -346,31 +354,26 @@
             <li class="generatedContent list-group-item bg-transparent">Musician Invites — invite artists and receive chart reward share of any artist you invite.(More information to come...) </li> 
         `;
 
-        function soulBoundRewards() {
+        function getSoulBoundRewards() {
             var soulBoundLevel = document.getElementById("soulBoundLevel").value;
 
             if (soulBoundLevel === "levelOne") {
-                console.log("Level 1: Citizen")
                 soulBoundRewardsTitle.textContent = "Soul Bound Rewards: 1三Citizen";
                 soulBoundRewardsList.innerHTML = levelOneRewards + allLevelRewards;
 
             } else if (soulBoundLevel === "levelTwo") {
-                console.log("Level 2: Difiant")
                 soulBoundRewardsTitle.textContent = "Soul Bound Rewards: 2三Defiant";
                 soulBoundRewardsList.innerHTML = levelTwoRewards + allLevelRewards;
 
             } else if (soulBoundLevel === "levelThree") {
-                console.log("Level 3: Hanzoku")
                 soulBoundRewardsTitle.textContent = "Soul Bound Rewards: 3三Hanzoku";
                 soulBoundRewardsList.innerHTML = levelThreeRewards + allLevelRewards;
-                    
+
             } else if (soulBoundLevel === "levelFour") {
-                console.log("Level 4: The 33")
                 soulBoundRewardsTitle.textContent = "Soul Bound Rewards: 4三TheThirtyThree";
                 soulBoundRewardsList.innerHTML = levelFourRewards + allLevelRewards;
 
             } else {
-                console.log("Not Soulbound")
                 soulBoundRewardsTitle.textContent = "Soul Bound Rewards: 0三Unbound";
                 soulBoundRewardsList.innerHTML = notSoulBound;
             }
