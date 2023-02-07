@@ -80,9 +80,9 @@
                 </table>
             </div>
         </div>
-        
-        
-        
+
+
+
         <div>
             <br>
             <h2>Static Brilliance Traits</h2>
@@ -97,7 +97,9 @@
         <div>
             <br>
             <h2>Dynamic Brilliance Traits</h2>
-            <p>No information released yet...</p>
+            <ul class="list-group" id="dynamicBrillianceTraitsList">
+
+            </ul>
         </div>
 
         <div>
@@ -132,6 +134,7 @@
         const generatedContent = document.getElementsByClassName("generatedContent");
         const nftimage = document.getElementById("nftimage");
         const brillianceTraits = document.getElementById("brillianceTraitsList");
+        const dynamicBrillianceTraitsList = document.getElementById("dynamicBrillianceTraitsList");
 
 
         //get input information
@@ -211,7 +214,7 @@
 
                     switch (val.value) {
 
-                        //Companions
+                        //Cro Companions
                         case "Light Cro":
                         case "Dark Cro":
                             brillianceTraits.innerHTML += `<li class="generatedContent list-group-item  bg-transparent">Light or Dark Cro — Access to exclusive physical SAN art from Cromagnus.</li>`;
@@ -280,7 +283,11 @@
                         case "Arthur":
                             brillianceTraits.innerHTML += `<li class="generatedContent list-group-item  bg-transparent">Arthur — Hidden treasures await.</li>`;
                             break;
-
+                        
+                        //dynamic brilliance traits
+                        case "DJ":
+                        dynamicBrillianceTraitsList.innerHTML += `<li class="generatedContent list-group-item  bg-transparent">DJ - Let Kaku know if you hold this trait.</li>`;
+                            break;
                     }
 
                 })
@@ -288,133 +295,87 @@
             }
         }
 
-    const soulBoundRewardsList = document.getElementById("soulBoundRewardsList");
-    const soulBoundRewardsTitle = document.getElementById("soulBoundRewardsTitle");
-
-    function soulBoundRewards(){
-        var soulBoundLevel = document.getElementById("soulBoundLevel").value;
         
-        if (soulBoundLevel === "levelOne"){
-            console.log("Level 1: Citizen")
-            soulBoundRewardsTitle.textContent = "Soul Bound Rewards: 1三Citizen";
-            soulBoundRewardsList.innerHTML += 
-            `<li class="generatedContent list-group-item bg-transparent">SAN Sound Platform — One year of access.</li>
-            <li class="generatedContent list-group-item bg-transparent">Hardware — One SAN W三AR unit</li>   
-            <li class="generatedContent list-group-item bg-transparent">Event Access — Live Concerts/Festivals, Virtual Concerts, and “SAN-Con”. </li>
-            <li class="generatedContent list-group-item bg-transparent">Attendance Tokens — Attending SAN events may result in special soulbound NFTs appearing in the attendee’s wallet. These NFTs can unlock additional ecosystem perks.</li>
-            <li class="generatedContent list-group-item bg-transparent">SAN Tattoos — All major SAN events will have tattoo artists on site for great decisions and no regrets. All SAN-related tattoos will be free. Restrictions apply.</li>
-            <li class="generatedContent list-group-item bg-transparent">Allowlist — One allowlist spots for the next collection mint (which will not be a free mint).</li>
-            <li class="generatedContent list-group-item bg-transparent">Merchandise — Access to the SAN Merchandise Storefront. </li>
-            <li class="generatedContent list-group-item bg-transparent">Metadata Updates — Opt-in NFT Metadata Updates (Personalization/Animations).</li>
-            <li class="generatedContent list-group-item bg-transparent">Upgrades — SAN Sound In-App Upgrades.</li>
-            <li class="generatedContent list-group-item bg-transparent">Bonus — SAN Privacy Tools and Features.</li>
-            `;
-
-            
-
-        }else if (soulBoundLevel === "levelTwo"){
-            console.log("Level 2: Difiant")
-
-            soulBoundRewardsTitle.textContent = "Soul Bound Rewards: 2三Defiant";
-            soulBoundRewardsList.innerHTML += 
-            `<li class="generatedContent list-group-item bg-transparent">SAN Sound Platform — LIFETIME access.</li>
-            <li class="generatedContent list-group-item bg-transparent">Hardware — One SAN W三AR unit with 1-year warranty.</li>
-
-            <li class="generatedContent list-group-item bg-transparent">User Invites — 5 invites</li>
-
-            <li class="generatedContent list-group-item bg-transparent">Event Access — Live Concerts/Festivals, Virtual Concerts, and “SAN-Con”. </li>
-            <li class="generatedContent list-group-item bg-transparent">Attendance Tokens — Attending SAN events may result in special soulbound NFTs appearing in the attendee’s wallet. These NFTs can unlock additional ecosystem perks.</li>
-            <li class="generatedContent list-group-item bg-transparent">SAN Tattoos — All major SAN events will have tattoo artists on site for great decisions and no regrets. All SAN-related tattoos will be free. Restrictions apply.</li>
-            
-            <li class="generatedContent list-group-item bg-transparent">+1's for Events — Receive 1 additional entry to all SAN events per Level 2 soulbound NFT. RSVP will be required.</li>
-            <li class="generatedContent list-group-item bg-transparent">Governance Token — 1x multiplier on Airdrop.</li>
-
-
-            <li class="generatedContent list-group-item bg-transparent">Allowlist — One allowlist spots for the next collection mint (which will not be a free mint).</li>
-            
-            <li class="generatedContent list-group-item bg-transparent">Musician Invites — invite artists and receive chart reward share of any artist you invite.(More information to come...) </li>
-            <li class="generatedContent list-group-item bg-transparent">Merchandise — Access to the SAN Merchandise Storefront. </li>
-            <li class="generatedContent list-group-item bg-transparent">Metadata Updates — Opt-in NFT Metadata Updates (Personalization/Animations).</li>
-            <li class="generatedContent list-group-item bg-transparent">Upgrades — SAN Sound In-App Upgrades.</li>
-            <li class="generatedContent list-group-item bg-transparent">Bonus — SAN Privacy Tools and Features.</li>
-            `;
-
-
-
-        }else if (soulBoundLevel === "levelThree"){
-            console.log("Level 3: Hanzoku")
-
-            soulBoundRewardsTitle.textContent = "Soul Bound Rewards: 3三Hanzoku";
-            soulBoundRewardsList.innerHTML += 
-            `<li class="generatedContent list-group-item bg-transparent">SAN Sound Platform — LIFETIME access.</li>
-            <li class="generatedContent list-group-item bg-transparent">Hardware — One SAN W三AR unit with 1-year warranty.</li>
-
-            <li class="generatedContent list-group-item bg-transparent">User Invites — 10 invites</li>
-
-            <li class="generatedContent list-group-item bg-transparent">Event Access — Live Concerts/Festivals, Virtual Concerts, and “SAN-Con”. </li>
-            
-            <li class="generatedContent list-group-item bg-transparent">VIP Line — Get into events quickly and without the hassle.</li>
-            <li class="generatedContent list-group-item bg-transparent">VIP Areas — The “Faction Areas” are a way to connect with other faction members. Note: To enter a faction area the holder’s Soulbound Faction trait must correspond with the faction area.</li>
-
-
-            <li class="generatedContent list-group-item bg-transparent">Attendance Tokens — Attending SAN events may result in special soulbound NFTs appearing in the attendee’s wallet. These NFTs can unlock additional ecosystem perks.</li>
-            <li class="generatedContent list-group-item bg-transparent">SAN Tattoos — All major SAN events will have tattoo artists on site for great decisions and no regrets. All SAN-related tattoos will be free. Restrictions apply.</li>
-            
-            <li class="generatedContent list-group-item bg-transparent">+1's for Events — Receive 2 additional entries to all SAN events per Level 3 soulbound NFT. RSVP will be required.</li>
-            <li class="generatedContent list-group-item bg-transparent"> Governance Token — 2x multiplier on Airdrop</li>
-
-
-            <li class="generatedContent list-group-item bg-transparent">Allowlist — One allowlist spots for the next collection mint (which will not be a free mint).</li>
-            
-            <li class="generatedContent list-group-item bg-transparent">Musician Invites — invite artists and receive chart reward share of any artist you invite.(More information to come...) </li>
-            <li class="generatedContent list-group-item bg-transparent">Merchandise — Access to the SAN Merchandise Storefront. </li>
-            <li class="generatedContent list-group-item bg-transparent">Metadata Updates — Opt-in NFT Metadata Updates (Personalization/Animations).</li>
-            <li class="generatedContent list-group-item bg-transparent">Upgrades — SAN Sound In-App Upgrades.</li>
-            <li class="generatedContent list-group-item bg-transparent">Bonus — SAN Privacy Tools and Features.</li>
-            `;
-        }else if (soulBoundLevel === "levelFour"){
-            console.log("Level 4: The 33")
-            soulBoundRewardsTitle.textContent = "Soul Bound Rewards: 4三TheThirtyThree";
-            soulBoundRewardsList.innerHTML += 
-            `<li class="generatedContent list-group-item bg-transparent">SAN Sound Platform — LIFETIME access.</li>
-            <li class="generatedContent list-group-item bg-transparent">Hardware — One SAN W三AR unit with 1-year warranty.</li>
-
-            <li class="generatedContent list-group-item bg-transparent">User Invites — 100 invites</li>
-
-            <li class="generatedContent list-group-item bg-transparent">Event Access — Live Concerts/Festivals, Virtual Concerts, and “SAN-Con”. </li>
-            
-            <li class="generatedContent list-group-item bg-transparent">VIP Line — Get into events quickly and without the hassle.</li>
-            <li class="generatedContent list-group-item bg-transparent">VIP Areas — The “Faction Areas” are a way to connect with other faction members. Note: To enter a faction area the holder’s Soulbound Faction trait must correspond with the faction area.</li>
-
-
-            <li class="generatedContent list-group-item bg-transparent">Attendance Tokens — Attending SAN events may result in special soulbound NFTs appearing in the attendee’s wallet. These NFTs can unlock additional ecosystem perks.</li>
-            <li class="generatedContent list-group-item bg-transparent">SAN Tattoos — All major SAN events will have tattoo artists on site for great decisions and no regrets. All SAN-related tattoos will be free. Restrictions apply.</li>
-            
-            <li class="generatedContent list-group-item bg-transparent">+1's for Events —  Receive [?] additional entries to all SAN events per Level 4 soulbound NFT. A conversation with the SAN events team to define a customized package is required.</li>
-            <li class="generatedContent list-group-item bg-transparent"> Governance Token — 6x multiplier on Airdrop</li>
-
-
-            <li class="generatedContent list-group-item bg-transparent">Allowlist — One allowlist spots for the next collection mint (which will not be a free mint).</li>
-            
-            <li class="generatedContent list-group-item bg-transparent">Musician Invites — invite artists and receive chart reward share of any artist you invite.(More information to come...) </li>
-            <li class="generatedContent list-group-item bg-transparent">Merchandise — Access to the SAN Merchandise Storefront. </li>
-            <li class="generatedContent list-group-item bg-transparent">Metadata Updates — Opt-in NFT Metadata Updates (Personalization/Animations).</li>
-            <li class="generatedContent list-group-item bg-transparent">Upgrades — SAN Sound In-App Upgrades.</li>
-            <li class="generatedContent list-group-item bg-transparent">Bonus — SAN Privacy Tools and Features.</li>
-            `;
-
-
-        } else {
-            console.log("Not Soulbound")
-            soulBoundRewardsTitle.textContent = "Soul Bound Rewards: 0三Unbound";
-            soulBoundRewardsList.innerHTML += `
+        const soulBoundRewardsList = document.getElementById("soulBoundRewardsList");
+        const soulBoundRewardsTitle = document.getElementById("soulBoundRewardsTitle");
+        const notSoulBound = `
             <li class="generatedContent list-group-item bg-transparent">Event Access — Unbound NFT holders (holders who are not soulbound) will receive ticket discounts to all events, provided they hold 3 or more NFTs.</li>   
             <li class="generatedContent list-group-item bg-transparent">SAN Sound Platform — Can claim a 1 month trial</li>
             <li class="generatedContent list-group-item bg-transparent">Governance Token — Share in 1% of Initial Token Supply</li>
-            `;
-        }
+        `;
+        const allLevelRewards = `  
+            <li class="generatedContent list-group-item bg-transparent">Event Access — Live Concerts/Festivals, Virtual Concerts, and “SAN-Con”. </li>
+            <li class="generatedContent list-group-item bg-transparent">Attendance Tokens — Attending SAN events may result in special soulbound NFTs appearing in the attendee’s wallet. These NFTs can unlock additional ecosystem perks.</li>
+            <li class="generatedContent list-group-item bg-transparent">SAN Tattoos — All major SAN events will have tattoo artists on site for great decisions and no regrets. All SAN-related tattoos will be free. Restrictions apply.</li>
+            <li class="generatedContent list-group-item bg-transparent">Allowlist — One allowlist spots for the next collection mint (which will not be a free mint).</li>
+            <li class="generatedContent list-group-item bg-transparent">Merchandise — Access to the SAN Merchandise Storefront. </li>
+            <li class="generatedContent list-group-item bg-transparent">Metadata Updates — Opt-in NFT Metadata Updates (Personalization/Animations).</li>
+            <li class="generatedContent list-group-item bg-transparent">Upgrades — SAN Sound In-App Upgrades.</li>
+            <li class="generatedContent list-group-item bg-transparent">Bonus — SAN Privacy Tools and Features.</li>
+        `;
+        const levelOneRewards = `
+            <li class="generatedContent list-group-item bg-transparent">SAN Sound Platform — One year of access.</li>
+            <li class="generatedContent list-group-item bg-transparent">Hardware — One SAN W三AR unit</li>
+        `;
+        const levelTwoRewards = `
+            <li class="generatedContent list-group-item bg-transparent">SAN Sound Platform — LIFETIME access.</li>
+            <li class="generatedContent list-group-item bg-transparent">Hardware — One SAN W三AR unit with 1-year warranty.</li>
+            <li class="generatedContent list-group-item bg-transparent">User Invites — 5 invites</li>
+            <li class="generatedContent list-group-item bg-transparent">+1's for Events — Receive 1 additional entry to all SAN events per Level 2 soulbound NFT. RSVP will be required.</li>
+            <li class="generatedContent list-group-item bg-transparent">Governance Token — 1x multiplier on Airdrop.</li>
+            <li class="generatedContent list-group-item bg-transparent">Musician Invites — invite artists and receive chart reward share of any artist you invite.(More information to come...) </li>
+        `;
+        const levelThreeRewards = `
+            <li class="generatedContent list-group-item bg-transparent">SAN Sound Platform — LIFETIME access.</li>
+            <li class="generatedContent list-group-item bg-transparent">Hardware — One SAN W三AR unit with 1-year warranty.</li>
+            <li class="generatedContent list-group-item bg-transparent">User Invites — 10 invites</li>
+            <li class="generatedContent list-group-item bg-transparent">VIP Line — Get into events quickly and without the hassle.</li>
+            <li class="generatedContent list-group-item bg-transparent">VIP Areas — The “Faction Areas” are a way to connect with other faction members. Note: To enter a faction area the holder’s Soulbound Faction trait must correspond with the faction area.</li> 
+            <li class="generatedContent list-group-item bg-transparent">+1's for Events — Receive 2 additional entries to all SAN events per Level 3 soulbound NFT. RSVP will be required.</li>
+            <li class="generatedContent list-group-item bg-transparent"> Governance Token — 2x multiplier on Airdrop</li>
+            <li class="generatedContent list-group-item bg-transparent">Musician Invites — invite artists and receive chart reward share of any artist you invite.(More information to come...) </li> 
+        `;
+        const levelFourRewards = `
+            <li class="generatedContent list-group-item bg-transparent">SAN Sound Platform — LIFETIME access.</li>
+            <li class="generatedContent list-group-item bg-transparent">Hardware — One SAN W三AR unit with 1-year warranty.</li>
+            <li class="generatedContent list-group-item bg-transparent">User Invites — 100 invites</li>
+            <li class="generatedContent list-group-item bg-transparent">VIP Line — Get into events quickly and without the hassle.</li>
+            <li class="generatedContent list-group-item bg-transparent">VIP Areas — The “Faction Areas” are a way to connect with other faction members. Note: To enter a faction area the holder’s Soulbound Faction trait must correspond with the faction area.</li>
+            <li class="generatedContent list-group-item bg-transparent">+1's for Events —  Receive [?] additional entries to all SAN events per Level 4 soulbound NFT. A conversation with the SAN events team to define a customized package is required.</li>
+            <li class="generatedContent list-group-item bg-transparent"> Governance Token — 6x multiplier on Airdrop</li>
+            <li class="generatedContent list-group-item bg-transparent">Musician Invites — invite artists and receive chart reward share of any artist you invite.(More information to come...) </li> 
+        `;
 
-    }
+        function soulBoundRewards() {
+            var soulBoundLevel = document.getElementById("soulBoundLevel").value;
+
+            if (soulBoundLevel === "levelOne") {
+                console.log("Level 1: Citizen")
+                soulBoundRewardsTitle.textContent = "Soul Bound Rewards: 1三Citizen";
+                soulBoundRewardsList.innerHTML = levelOneRewards + allLevelRewards;
+
+            } else if (soulBoundLevel === "levelTwo") {
+                console.log("Level 2: Difiant")
+                soulBoundRewardsTitle.textContent = "Soul Bound Rewards: 2三Defiant";
+                soulBoundRewardsList.innerHTML = levelTwoRewards + allLevelRewards;
+
+            } else if (soulBoundLevel === "levelThree") {
+                console.log("Level 3: Hanzoku")
+                soulBoundRewardsTitle.textContent = "Soul Bound Rewards: 3三Hanzoku";
+                soulBoundRewardsList.innerHTML = levelThreeRewards + allLevelRewards;
+                    
+            } else if (soulBoundLevel === "levelFour") {
+                console.log("Level 4: The 33")
+                soulBoundRewardsTitle.textContent = "Soul Bound Rewards: 4三TheThirtyThree";
+                soulBoundRewardsList.innerHTML = levelFourRewards + allLevelRewards;
+
+            } else {
+                console.log("Not Soulbound")
+                soulBoundRewardsTitle.textContent = "Soul Bound Rewards: 0三Unbound";
+                soulBoundRewardsList.innerHTML = notSoulBound;
+            }
+
+        }
 
 
     </script>
