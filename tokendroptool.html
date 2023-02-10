@@ -1,0 +1,254 @@
+<!DOCTYPE html>
+<html lang="en" dir="ltr">
+
+<head>
+    <meta charset="utf-8">
+    <meta http-equiv="X-UA-Compatible" content="IE=edge">
+    <meta name="viewport" content="width=device-width, initial-scale=1">
+
+    <title>Airdrop Calculator(Beta)</title>
+
+    <link href="https://cdn.jsdelivr.net/npm/bootstrap@5.0.2/dist/css/bootstrap.min.css" rel="stylesheet"
+        integrity="sha384-EVSTQN3/azprG1Anm3QDgpJLIm9Nao0Yz1ztcQTwFspd3yD65VohhpuuCOmLASjC" crossorigin="anonymous">
+
+</head>
+
+<body class="bg-image" style="
+        background-image: url('images/BassDrop9990.avif');
+        background-repeat: no-repeat;
+        background-size: cover;
+        background-attachment: fixed;
+        background-position: center top;
+        height:100vh;
+        ">
+
+    <nav class="navbar sticky-top navbar-expand navbar-dark bg-dark">
+        <a class="navbar-brand" href="index.html" style="padding-left: 20px;">Brilliance</a>
+        <a class="navbar-brand" href="tokendroptool.html">Airdrop</a>
+    </nav>
+
+
+    <div class="container" style="background-color: rgba(211, 211, 211, 0.9);">
+        <br>
+        <h1 class="text-center">Airdrop Calculator(Beta)</h1>
+        <div class="text-center">
+            (This tool is not guaranteed to be accruate and is used for estimation purposes only! The dev knows nothing!
+            Make sure to verify with project <a href="https://medium.com/@sansound">documents</a> and on chain
+            data.)
+            <br>
+
+        </div>
+        <br>
+
+        <form>
+            <div>
+                <h4>Soul Bound Levels</h4>
+                <p>Token airdrop multipliers only apply if the NFT with the corresponding trait is souldbound to Level 2
+                    (Defiant) or greater
+                    <br>
+                    <br>Enter the number of soulbound NFTs per Level:
+                </p>
+                <div>
+                    <label for="levelOne">1三Citizen:&nbsp; &nbsp; </label>
+                    <input id="levelOne" type="number" placeholder="0">
+                </div>
+                <div>
+                    <label for="levelTwo">2三Defiant:&nbsp;</label>
+                    <input id="levelTwo" type="number" placeholder="0">
+                </div>
+                <div>
+                    <label for="levelThree">3三Hanzoku:&nbsp;</label>
+                    <input id="levelThree" type="number" placeholder="0">
+                </div>
+                <div>
+                    <label for="levelFour">4三The 33:&nbsp;</label>
+                    <input id="levelFour" type="number" placeholder="0">
+                </div>
+            </div>
+            <br>
+
+
+            <div>
+                <h4>Brilliance Traits</h4>
+                <p>Only Select if NFT with traits is souldbound to Level 2 (Defiant) or greater.</p>
+                <label for="soraFaction">Sora: &nbsp;</label>
+                <select id="soraFaction">
+                    <option value=0>0</option>
+                    <option value=1>1</option>
+                    <option value=2>2</option>
+                </select>
+            </div>
+            <br>
+            <div>
+                <label for="silverTokens">Silver Tokens: &nbsp;</label>
+                <select id="silverTokens">
+                    <option value=0>0</option>
+                    <option value=1>1</option>
+                    <option value=2>2</option>
+                    <option value=3>3</option>
+                </select>
+            </div>
+            <br>
+            <div>
+                <label for="goldTokens">Gold Tokens: &nbsp;</label>
+                <select id="goldTokens">
+                    <option value=0>0</option>
+                    <option value=1>1</option>
+                    <option value=2>2</option>
+                    <option value=3>3</option>
+                </select>
+                <br>
+                <br>
+
+            </div>
+            <div>
+                <button type="button" onclick="calculateAirDrop();">Calculate Air drop</button>
+                <br>
+                <br>
+            </div>
+        </form>
+        <div>
+            <h4>Estimated Airdrop</h4>
+            <p>Estimate is based on 100 Token Starting Base Amount (Entirely Speculation! NFA! yadda yadda...)</p>
+            <ul class="list-group" id="calculatorResults">
+
+            </ul>
+            <br>
+
+        </div>
+
+        <div>
+            <p>
+                <br>
+                <br>
+                Tips for my Toaster Fund: 0x84FdD7872010130ff5337a224771D503b289CBe2
+                <br>
+                <br>
+                This App uses Opensea's Public API <a href="https://opensea.io/collection/san-origin">SAN Origin
+                    Collection on Opensea</a>
+                <br>
+                <br>
+            </p>
+        </div>
+    </div>
+
+    <script>
+        const generatedContent = document.getElementsByClassName("generatedContent");
+        const calculatorResults = document.getElementById("calculatorResults");
+
+
+
+        function calculateAirDrop() {
+            const lvlOne = document.getElementById("levelOne").value;
+            const lvlTwo = document.getElementById("levelTwo").value;
+            const lvlThree = document.getElementById("levelThree").value;
+            const lvlFour = document.getElementById("levelFour").value;
+            const sora = document.getElementById("soraFaction").value;
+            const silver = document.getElementById("silverTokens").value;
+            const gold = document.getElementById("goldTokens").value;
+            const baseAmount = 100;
+
+            var args = [];
+
+            clearGeneratedContent();
+
+            if (lvlTwo > 0 || lvlThree > 0 || lvlFour > 0) {
+                var totalBaseAmount = 0;
+                // this is for level soul bound
+                if (lvlOne > 0) {
+                    let quadraticMultiplier = 1.125;
+                    for (let i = 0; i < lvlTwo; i++) {
+                        args.push(quadraticMultiplier);
+                    }
+                }
+
+                if (lvlTwo > 0) {
+                    let quadraticMultiplier = 1.25;
+                    let lvlTwoMultiplier = 1;
+                    for (let i = 0; i < lvlTwo; i++) {
+                        totalBaseAmount += baseAmount * lvlTwoMultiplier;
+                        args.push(quadraticMultiplier);
+                    }
+                }
+
+                if (lvlThree > 0) {
+                    let quadraticMultiplier = 1.5;
+                    let lvlThreeMultiplier = 2;
+
+                    for (let i = 0; i < lvlThree; i++) {
+                        totalBaseAmount += baseAmount * lvlThreeMultiplier;
+                        args.push(quadraticMultiplier);
+                    }
+                }
+
+                if (lvlFour > 0) {
+                    let quadraticMultiplier = 2;
+                    let lvlFourMultiplier = 6;
+
+                    for (let i = 0; i < lvlFour; i++) {
+                        totalBaseAmount += baseAmount * lvlFourMultiplier;
+                        args.push(quadraticMultiplier);
+                    }
+                }
+
+                //traits of NFT if over level 2
+                if (sora > 0) {
+                    let soraMultiplier = 2.0;
+                    for (let i = 0; i < sora; i++) {
+                        args.push(soraMultiplier);
+                    }
+                }
+
+                if (silver > 0) {
+                    let silverMultiplier = 1.1;
+                    for (let i = 0; i < silver; i++) {
+                        args.push(silverMultiplier);
+                    }
+                }
+
+                if (gold > 0) {
+                    let goldMultiplier = 1.3;
+                    for (let i = 0; i < gold; i++) {
+                        args.push(goldMultiplier);
+                    }
+                }
+
+                args.push(totalBaseAmount)
+                calculatorResults.innerHTML += `<li class="generatedContent list-group-item bg-transparent">Total Estimate: ${multiply(...args)} AMPS</li>
+                <li class="generatedContent list-group-item bg-transparent">Total Base Amount: ${totalBaseAmount}</li>
+                <li class="generatedContent list-group-item bg-transparent">Multipliers: ${args.slice(0, -1)}</li>
+                `;
+
+                console.log(args);
+                console.log(multiply(...args));
+
+
+
+            } else {
+                calculatorResults.innerHTML += `<p class="generatedContent">Need to Soulbind NFT to Level 2 or higher to recieve airdrop</p>`;
+            }
+
+
+            function multiply(...args) {
+                let result = 1;
+                for (let i = 0; i < args.length; i++) {
+                    result *= args[i];
+                }
+                return result;
+            }
+        }
+
+        function clearGeneratedContent() {
+            while (generatedContent.length > 0) {
+                generatedContent[0].parentNode.removeChild(generatedContent[0]);
+            }
+        }
+
+    </script>
+    <script src="https://cdn.jsdelivr.net/npm/bootstrap@5.0.2/dist/js/bootstrap.bundle.min.js"
+        integrity="sha384-MrcW6ZMFYlzcLA8Nl+NtUVF0sA7MsXsP1UyJoMp4YLEuNSfAP+JcXn/tWtIaxVXM" crossorigin="anonymous">
+        </script>
+</body>
+
+
+</html>
