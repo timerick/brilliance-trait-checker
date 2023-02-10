@@ -172,7 +172,7 @@
             //Queries data for brilliance traits and values outputs it into a list
             function checkForBrillianceTraits(data) {
                 nftimage.innerHTML = `<img class="img-fluid" src=` + data.image_thumbnail_url + `>`;
-
+                console.log(data);
                 let noEdgeCount = 0;
                 data.traits.forEach(val => {
                     tablebody.innerHTML += `<tr><td>${val.trait_type}</td> <td>${val.value}</td></tr>`;

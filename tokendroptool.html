@@ -13,7 +13,7 @@
 
 </head>
 
-<body class="bg-image" style="
+<body class="bg-image" onload="checkAirDropForCitizens()"style="
         background-image: url('images/BassDrop9990.avif');
         background-repeat: no-repeat;
         background-size: cover;
@@ -112,6 +112,14 @@
         </div>
 
         <div>
+            <h4>Unbound & 1三Citizen Airdrop </h4>
+            <ul class="list-group" id="unboundAirDrop">
+
+            </ul>
+            <br>
+        </div>
+
+        <div>
             <p>
                 <br>
                 <br>
@@ -127,6 +135,39 @@
     </div>
 
     <script>
+        /*
+        Governance Tokens per NFT Held or Soulbound to Level 1 (“Citizen”) = 
+        555,000 AMPs (1% Initial Token Supply) / 
+        (Remaining Unbound SAN Origin NFTs + Number of Soulbound Level 1 NFTs)
+        */
+        const options = { method: 'GET' };
+        const unboundAirDropTotal = document.getElementById("unboundAirDrop");
+
+        function checkAirDropForCitizens(){
+            fetch('https://api.opensea.io/api/v1/collection/san-origin', options)
+            .then(response => response.json()) 
+            .then(data => getUnboundandCitizen(data))
+            .catch(err => console.error(err));
+        }
+        
+        function getUnboundandCitizen(data){
+            
+                let unbound = data.collection.traits.Soulbound.false;
+                let citizen = data.collection.traits["Soulbound Level"]["1三citizen"];
+                let airDrop = 555000/(unbound+citizen);
+                unboundAirDropTotal.innerHTML += `
+                <li class="list-group-item bg-transparent">${airDrop} Airdrop per Citizen or Unbound SAN held</li>
+                <li class="list-group-item bg-transparent"> ${unbound} Unbound SAN Remaing</li>
+                <li class="list-group-item bg-transparent">${citizen} Level 1三Citizen Souldbound</li>`;
+                
+                console.log(unbound);
+                console.log(citizen);   
+                console.log(555000/(unbound+citizen));
+            }
+
+
+
+
         const generatedContent = document.getElementsByClassName("generatedContent");
         const calculatorResults = document.getElementById("calculatorResults");
 
