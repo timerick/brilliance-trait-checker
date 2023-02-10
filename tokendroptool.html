@@ -24,7 +24,7 @@
 
     <nav class="navbar sticky-top navbar-expand navbar-dark bg-dark">
         <a class="navbar-brand" href="index.html" style="padding-left: 20px;">Brilliance</a>
-        <a class="navbar-brand" href="tokendroptool.html">Airdrop</a>
+        <a class="navbar-brand" href="tokendroptool.html">Airdrop (Beta)</a>
     </nav>
 
 
@@ -36,10 +36,8 @@
             Make sure to verify with project <a href="https://medium.com/@sansound">documents</a> and on chain
             data.)
             <br>
-
         </div>
         <br>
-
         <form>
             <div>
                 <h4>Soul Bound Levels</h4>
@@ -66,8 +64,6 @@
                 </div>
             </div>
             <br>
-
-
             <div>
                 <h4>Brilliance Traits</h4>
                 <p>Only Select if NFT with traits is souldbound to Level 2 (Defiant) or greater.</p>
@@ -99,7 +95,6 @@
                 </select>
                 <br>
                 <br>
-
             </div>
             <div>
                 <button type="button" onclick="calculateAirDrop();">Calculate Air drop</button>
@@ -114,7 +109,6 @@
 
             </ul>
             <br>
-
         </div>
 
         <div>
@@ -135,8 +129,6 @@
     <script>
         const generatedContent = document.getElementsByClassName("generatedContent");
         const calculatorResults = document.getElementById("calculatorResults");
-
-
 
         function calculateAirDrop() {
             const lvlOne = document.getElementById("levelOne").value;
@@ -222,12 +214,9 @@
                 console.log(args);
                 console.log(multiply(...args));
 
-
-
             } else {
                 calculatorResults.innerHTML += `<li class="generatedContent list-group-item bg-transparent">Need to Soulbind NFT to Level 2 or higher to recieve airdrop!</li>`;
             }
-
 
             function multiply(...args) {
                 let result = 1;
