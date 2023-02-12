@@ -13,7 +13,7 @@
 
 </head>
 
-<body class="bg-image" onload="checkAirDropForCitizens()"style="
+<body class="bg-image" onload="checkAirDropForCitizens()" style="
         background-image: url('images/BassDrop9990.avif');
         background-repeat: no-repeat;
         background-size: cover;
@@ -103,8 +103,8 @@
             </div>
         </form>
         <div>
-            <h4>Estimated Airdrop</h4>
-            <p>Estimate is based on 100 Token Starting Base Amount (Entirely Speculation! NFA! yadda yadda...)</p>
+            <h4>Estimated Airdrop Multiplier</h4>
+            <p>(Entirely Speculation! NFA! yadda yadda...)</p>
             <ul class="list-group" id="calculatorResults">
 
             </ul>
@@ -143,34 +143,33 @@
         const options = { method: 'GET' };
         const unboundAirDropTotal = document.getElementById("unboundAirDrop");
 
-        function checkAirDropForCitizens(){
+
+        function checkAirDropForCitizens() {
             fetch('https://api.opensea.io/api/v1/collection/san-origin', options)
-            .then(response => response.json()) 
-            .then(data => getUnboundandCitizen(data))
-            .catch(err => console.error(err));
+                .then(response => response.json())
+                .then(data => getUnboundandCitizen(data))
+                .catch(err => console.error(err));
         }
-        
-        function getUnboundandCitizen(data){
-            
-                let unbound = data.collection.traits.Soulbound.false;
-                let citizen = data.collection.traits["Soulbound Level"]["1三citizen"];
-                let airDrop = 555000/(unbound+citizen);
-                unboundAirDropTotal.innerHTML += `
+
+        function getUnboundandCitizen(data) {
+
+            let unbound = data.collection.traits.Soulbound.false;
+            let citizen = data.collection.traits["Soulbound Level"]["1三citizen"];
+            let airDrop = 555000 / (unbound + citizen);
+            unboundAirDropTotal.innerHTML += `
                 <li class="list-group-item bg-transparent">${airDrop} Airdrop per Citizen or Unbound SAN held</li>
                 <li class="list-group-item bg-transparent"> ${unbound} Unbound SAN Remaing</li>
                 <li class="list-group-item bg-transparent">${citizen} Level 1三Citizen Souldbound</li>`;
-                
-                console.log(unbound);
-                console.log(citizen);   
-                console.log(555000/(unbound+citizen));
-            }
 
-
-
+            console.log(unbound);
+            console.log(citizen);
+            console.log(555000 / (unbound + citizen));
+        }
 
         const generatedContent = document.getElementsByClassName("generatedContent");
         const calculatorResults = document.getElementById("calculatorResults");
 
+        
         function calculateAirDrop() {
             const lvlOne = document.getElementById("levelOne").value;
             const lvlTwo = document.getElementById("levelTwo").value;
@@ -179,84 +178,116 @@
             const sora = document.getElementById("soraFaction").value;
             const silver = document.getElementById("silverTokens").value;
             const gold = document.getElementById("goldTokens").value;
-            const baseAmount = 100;
+
+            const sameLvlAs = 2;
+            const oneLvlBelow = 1;
+            const twoLvlBelow = 0.5;
+            const threeLvlBelow = 0.25;
+
+            const lvlFourMultiplier = 6;
+            const lvlThreeMultiplier = 2;
+            const lvlTwoMultiplier = 1;
 
             var args = [];
 
             clearGeneratedContent();
+            getSoulboundMultipliers();
+            getTraitMultipliers();
+            updatePage();
 
-            if (lvlTwo > 0 || lvlThree > 0 || lvlFour > 0) {
-                var totalBaseAmount = 0;
-                // this is for level soul bound
-                if (lvlOne > 0) {
-                    let quadraticMultiplier = 1.125;
-                    for (let i = 0; i < lvlTwo; i++) {
-                        args.push(quadraticMultiplier);
-                    }
-                }
-
-                if (lvlTwo > 0) {
-                    let quadraticMultiplier = 1.25;
-                    let lvlTwoMultiplier = 1;
-                    for (let i = 0; i < lvlTwo; i++) {
-                        totalBaseAmount += baseAmount * lvlTwoMultiplier;
-                        args.push(quadraticMultiplier);
-                    }
-                }
-
-                if (lvlThree > 0) {
-                    let quadraticMultiplier = 1.5;
-                    let lvlThreeMultiplier = 2;
-
-                    for (let i = 0; i < lvlThree; i++) {
-                        totalBaseAmount += baseAmount * lvlThreeMultiplier;
-                        args.push(quadraticMultiplier);
-                    }
-                }
-
+            function getSoulboundMultipliers() {
                 if (lvlFour > 0) {
-                    let quadraticMultiplier = 2;
-                    let lvlFourMultiplier = 6;
-
+                    let highFour = lvlFour - 1;
+                    quadraticMultiplier(highFour, sameLvlAs);
                     for (let i = 0; i < lvlFour; i++) {
-                        totalBaseAmount += baseAmount * lvlFourMultiplier;
-                        args.push(quadraticMultiplier);
+                        args.push(lvlFourMultiplier);
+                    }
+                    if (lvlThree > 0) {
+                        quadraticMultiplier(lvlThree, oneLvlBelow);
+                        for (let i = 0; i < lvlThree; i++) {
+                            args.push(lvlThreeMultiplier);
+                        }
+                    }
+                    if (lvlTwo > 0) {
+                        quadraticMultiplier(lvlTwo, twoLvlBelow);
+                        for (let i = 0; i < lvlTwo; i++) {
+                            args.push(lvlTwoMultiplier);
+                        }
+                    }
+                    if (lvlOne > 0) {
+                        quadraticMultiplier(lvlOne, threeLvlBelow)
+                    }
+                } else if (lvlThree > 0) {
+                    let highThree = lvlThree - 1;
+                    quadraticMultiplier(highThree, sameLvlAs);
+                    for (let i = 0; i < lvlThree; i++) {
+                        args.push(lvlThreeMultiplier);
+                    }
+                    if (lvlTwo > 0) {
+                        quadraticMultiplier(lvlTwo, twoLvlBelow);
+                        for (let i = 0; i < lvlTwo; i++) {
+                            args.push(lvlTwoMultiplier);
+                        }
+                    }
+                    if (lvlOne > 0) {
+                        quadraticMultiplier(lvlOne, threeLvlBelow)
+                    }
+                } else if (lvlTwo > 0) {
+                    let highTwo = lvlTwo - 1;
+                    quadraticMultiplier(highTwo, sameLvlAs);
+                    for (let i = 0; i < lvlTwo; i++) {
+                        args.push(lvlTwoMultiplier);
+                    }
+                    if (lvlOne > 0) {
+                        quadraticMultiplier(lvlOne, threeLvlBelow)
+                    }
+
+                }
+            }
+
+            function getTraitMultipliers() {
+                if (lvlTwo > 0 || lvlThree > 0 || lvlFour > 0) {
+                    //traits of NFT if over level 2
+                    if (sora > 0) {
+                        let soraMultiplier = 2.0;
+                        for (let i = 0; i < sora; i++) {
+                            args.push(soraMultiplier);
+                        }
+                    }
+                    if (silver > 0) {
+                        let silverMultiplier = 1.1;
+                        for (let i = 0; i < silver; i++) {
+                            args.push(silverMultiplier);
+                        }
+                    }
+                    if (gold > 0) {
+                        let goldMultiplier = 1.3;
+                        for (let i = 0; i < gold; i++) {
+                            args.push(goldMultiplier);
+                        }
                     }
                 }
+            }
+            function updatePage() {
 
-                //traits of NFT if over level 2
-                if (sora > 0) {
-                    let soraMultiplier = 2.0;
-                    for (let i = 0; i < sora; i++) {
-                        args.push(soraMultiplier);
-                    }
+                if (args.length > 1) {
+                    calculatorResults.innerHTML += `
+                        <li class="generatedContent list-group-item bg-transparent">Estimated Multiplier: ${multiply(...args)} X</li>
+                        <li class="generatedContent list-group-item bg-transparent">Break Down of Multipliers: ${args}</li>
+                        `;
+                    console.log(args);
+                    console.log(multiply(...args));
+                } else {
+                    calculatorResults.innerHTML += `<li class="generatedContent list-group-item bg-transparent">Need to Soulbind NFT to Level 2 or higher to recieve airdrop!</li>`;
                 }
-
-                if (silver > 0) {
-                    let silverMultiplier = 1.1;
-                    for (let i = 0; i < silver; i++) {
-                        args.push(silverMultiplier);
-                    }
+            }
+            //x equals number souldbound, a equals starting multiplier
+            function quadraticMultiplier(x, a) {
+                for (let i = 0; i < x; i++) {
+                    y = (1 + a / 2);
+                    a *= 0.5;
+                    args.push(y);
                 }
-
-                if (gold > 0) {
-                    let goldMultiplier = 1.3;
-                    for (let i = 0; i < gold; i++) {
-                        args.push(goldMultiplier);
-                    }
-                }
-
-                args.push(totalBaseAmount);
-                calculatorResults.innerHTML += `<li class="generatedContent list-group-item bg-transparent">Total Estimate: ${multiply(...args)} AMPS</li>
-                <li class="generatedContent list-group-item bg-transparent">Total Base Amount: ${totalBaseAmount}</li>
-                <li class="generatedContent list-group-item bg-transparent">Multipliers: ${args.slice(0, -1)}</li>
-                `;
-
-                console.log(args);
-                console.log(multiply(...args));
-
-            } else {
-                calculatorResults.innerHTML += `<li class="generatedContent list-group-item bg-transparent">Need to Soulbind NFT to Level 2 or higher to recieve airdrop!</li>`;
             }
 
             function multiply(...args) {
@@ -264,15 +295,16 @@
                 for (let i = 0; i < args.length; i++) {
                     result *= args[i];
                 }
-                return result;
+                return result.toFixed(2);
             }
         }
-
+        
         function clearGeneratedContent() {
             while (generatedContent.length > 0) {
                 generatedContent[0].parentNode.removeChild(generatedContent[0]);
             }
         }
+
 
     </script>
     <script src="https://cdn.jsdelivr.net/npm/bootstrap@5.0.2/dist/js/bootstrap.bundle.min.js"
