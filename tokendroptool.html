@@ -96,6 +96,19 @@
                 <br>
                 <br>
             </div>
+
+            <div>
+                <label for="goldBars">Gold Bars: &nbsp;</label>
+                <select id="goldBars">
+                    <option value=0>0</option>
+                    <option value=1>1</option>
+                    <option value=2>2</option>
+                    <option value=3>3</option>
+                </select>
+                <br>
+                <br>
+            </div>
+
             <div>
                 <button type="button" onclick="calculateAirDrop();">Calculate Air drop</button>
                 <br>
@@ -178,6 +191,7 @@
             const sora = document.getElementById("soraFaction").value;
             const silver = document.getElementById("silverTokens").value;
             const gold = document.getElementById("goldTokens").value;
+            const goldBar = document.getElementById("goldBars").value;
 
             const sameLvlAs = 2;
             const oneLvlBelow = 1;
@@ -198,21 +212,13 @@
             function getSoulboundMultipliers() {
                 if (lvlFour > 0) {
                     let highFour = lvlFour - 1;
+                    args.push(lvlFourMultiplier);
                     quadraticMultiplier(highFour, sameLvlAs);
-                    for (let i = 0; i < lvlFour; i++) {
-                        args.push(lvlFourMultiplier);
-                    }
                     if (lvlThree > 0) {
                         quadraticMultiplier(lvlThree, oneLvlBelow);
-                        for (let i = 0; i < lvlThree; i++) {
-                            args.push(lvlThreeMultiplier);
-                        }
                     }
                     if (lvlTwo > 0) {
                         quadraticMultiplier(lvlTwo, twoLvlBelow);
-                        for (let i = 0; i < lvlTwo; i++) {
-                            args.push(lvlTwoMultiplier);
-                        }
                     }
                     if (lvlOne > 0) {
                         quadraticMultiplier(lvlOne, threeLvlBelow)
@@ -220,14 +226,9 @@
                 } else if (lvlThree > 0) {
                     let highThree = lvlThree - 1;
                     quadraticMultiplier(highThree, sameLvlAs);
-                    for (let i = 0; i < lvlThree; i++) {
-                        args.push(lvlThreeMultiplier);
-                    }
+                    args.push(lvlThreeMultiplier);
                     if (lvlTwo > 0) {
                         quadraticMultiplier(lvlTwo, twoLvlBelow);
-                        for (let i = 0; i < lvlTwo; i++) {
-                            args.push(lvlTwoMultiplier);
-                        }
                     }
                     if (lvlOne > 0) {
                         quadraticMultiplier(lvlOne, threeLvlBelow)
@@ -235,9 +236,7 @@
                 } else if (lvlTwo > 0) {
                     let highTwo = lvlTwo - 1;
                     quadraticMultiplier(highTwo, sameLvlAs);
-                    for (let i = 0; i < lvlTwo; i++) {
-                        args.push(lvlTwoMultiplier);
-                    }
+                    args.push(lvlTwoMultiplier);
                     if (lvlOne > 0) {
                         quadraticMultiplier(lvlOne, threeLvlBelow)
                     }
@@ -264,6 +263,12 @@
                         let goldMultiplier = 1.3;
                         for (let i = 0; i < gold; i++) {
                             args.push(goldMultiplier);
+                        }
+                    }
+                    if (goldBar > 0) {
+                        let goldBarMultiplier = 3;
+                        for (let i = 0; i < goldBar; i++) {
+                            args.push(goldBarMultiplier);
                         }
                     }
                 }
