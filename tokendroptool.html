@@ -311,30 +311,6 @@
                 generatedContent[0].parentNode.removeChild(generatedContent[0]);
             }
         }
-        //testing grabing metadata by holder address
-        const soulboundholders = [
-            0x2fa105ace88d22060d06f50ed16f04ad74762dad, //koa
-
-        ];
-
-        function findSoulboundHolders() {
-
-            const options = { method: 'GET', headers: { accept: 'application/json' } };
-
-            fetch('https://api.opensea.io/api/v1/assets?collection=san-origin&order_direction=desc&limit=20&include_orders=false', options)
-                .then(response => response.json())
-                .then(response => console.log(response))
-                .catch(err => console.error(err));
-
-
-            /*fetch("/nft-owners")
-              .then(response => response.json())
-              .then(data => {
-                console.log(data);
-              });*/
-
-
-        }
 
     </script>
     <script src="https://cdn.jsdelivr.net/npm/bootstrap@5.0.2/dist/js/bootstrap.bundle.min.js"
